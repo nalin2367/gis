@@ -1,0 +1,6 @@
+{
+  "name": "InsuranceManager",
+  "description": "Insurance company management dashboard with metrics, policies, claims, export/import, and invoice printing.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

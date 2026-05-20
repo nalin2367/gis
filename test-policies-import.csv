@@ -1,0 +1,2 @@
+id,customerId,type,coverageAmount,premium,startDate,endDate,status
+POL-TEST-9001,CUST-TEST-9001,auto,150000,3200,2026-05-20,2027-05-20,active
