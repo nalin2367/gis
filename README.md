@@ -17,7 +17,7 @@ npm run dev
 
 The local server runs on `http://localhost:3000` and serves both the Vite app and `/api` from `backend/server.ts`.
 
-To test the Vercel-style frontend against Google Apps Script locally, create `.env.local`:
+To test the frontend against Google Apps Script locally, create `.env.local`:
 
 ```bash
 VITE_API_BASE_URL="https://script.google.com/macros/s/YOUR_DEPLOYMENT_ID/exec"
@@ -73,6 +73,14 @@ VITE_API_BASE_URL="https://script.google.com/macros/s/YOUR_DEPLOYMENT_ID/exec"
 ```
 
 The included [vercel.json](vercel.json) already sets the frontend build command, static output directory, and SPA rewrite.
+
+The frontend uses a same-origin `/api` proxy on Vercel. This keeps Apps Script and Google Sheets as the backend/database, while avoiding browser CORS errors from direct `script.google.com` calls.
+
+If you prefer a server-only variable name, also set:
+
+```bash
+APPS_SCRIPT_URL="https://script.google.com/macros/s/YOUR_DEPLOYMENT_ID/exec"
+```
 
 ## Verification
 

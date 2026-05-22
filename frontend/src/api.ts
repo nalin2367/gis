@@ -1,7 +1,11 @@
 type ApiResource = 'customers' | 'policies' | 'claims' | 'invoices';
 
 const configuredApiBaseUrl = import.meta.env.VITE_API_BASE_URL?.trim();
-const apiBaseUrl = (configuredApiBaseUrl || '/api').replace(/\/+$/, '');
+const shouldUseVercelProxy =
+  import.meta.env.PROD &&
+  configuredApiBaseUrl &&
+  /script\.google\.com\/macros\/s\//.test(configuredApiBaseUrl);
+const apiBaseUrl = (shouldUseVercelProxy ? '/api' : configuredApiBaseUrl || '/api').replace(/\/+$/, '');
 
 const isAppsScriptApi = /script\.google\.com\/macros\/s\//.test(apiBaseUrl);
 
