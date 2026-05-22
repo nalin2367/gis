@@ -66,7 +66,14 @@ export const Layout: React.FC<LayoutProps> = ({ children, activeTab, setActiveTa
             premium: Number(row['GrossPremium']) || 0,
             startDate: row['PolicyStartDate'] || new Date().toISOString().slice(0, 10),
             endDate: row['PolicyEndDate'] || new Date().toISOString().slice(0, 10),
-            status: 'active'
+            status: 'active',
+            registrationNo: row['VechileNo'] || row['VehicleNo'] || '',
+            engineNo: row['EngineNo'] || '',
+            chassisNo: row['ChassisNo'] || '',
+            makeModel: [row['Make'], row['Model']].filter(Boolean).join(' / '),
+            yearOfMfg: row['YearOfManufacture'] || '',
+            cubicCapacity: row['CC'] || '',
+            seating: row['SeatingCapacity'] || ''
           });
 
           importedInvoices.push({

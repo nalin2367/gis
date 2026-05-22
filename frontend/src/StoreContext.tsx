@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
 import { Customer, Policy, Claim, Invoice } from './types';
+import { fetchResource, syncResource } from './api';
 
 type StoreContextType = {
   customers: Customer[];
@@ -31,10 +32,10 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       try {
         setLoadError(null);
         const [c, p, cl, i] = await Promise.all([
-          fetch('/api/customers').then(res => res.json()),
-          fetch('/api/policies').then(res => res.json()),
-          fetch('/api/claims').then(res => res.json()),
-          fetch('/api/invoices').then(res => res.json()),
+          fetchResource<Customer>('customers'),
+          fetchResource<Policy>('policies'),
+          fetchResource<Claim>('claims'),
+          fetchResource<Invoice>('invoices'),
         ]);
         setCustomers(c);
         setPolicies(p);
@@ -53,34 +54,12 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     if (!loaded) return;
     setSyncStatus('saving');
     try {
-      const responses = await Promise.all([
-        fetch('/api/customers/sync', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(customers)
-        }),
-        fetch('/api/policies/sync', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(policies)
-        }),
-        fetch('/api/claims/sync', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(claims)
-        }),
-        fetch('/api/invoices/sync', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(invoices)
-        })
+      await Promise.all([
+        syncResource<Customer>('customers', customers),
+        syncResource<Policy>('policies', policies),
+        syncResource<Claim>('claims', claims),
+        syncResource<Invoice>('invoices', invoices),
       ]);
-
-      const hasFailed = responses.some((res) => !res.ok);
-      if (hasFailed) {
-        setSyncStatus('error');
-        return;
-      }
 
       setSyncStatus('saved');
       if (savedStatusTimeoutRef.current) clearTimeout(savedStatusTimeoutRef.current);

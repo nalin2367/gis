@@ -16,6 +16,13 @@ export type Policy = {
   startDate: string;
   endDate: string;
   status: 'active' | 'expired' | 'cancelled';
+  registrationNo?: string;
+  engineNo?: string;
+  chassisNo?: string;
+  makeModel?: string;
+  yearOfMfg?: string;
+  cubicCapacity?: string;
+  seating?: string;
 };
 
 export type Claim = {

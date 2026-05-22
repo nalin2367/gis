@@ -5,10 +5,13 @@
   "type": "module",
   "scripts": {
     "dev": "tsx backend/server.ts",
-    "build": "vite build --config frontend/vite.config.ts && esbuild backend/server.ts --bundle --platform=node --format=cjs --packages=external --sourcemap --outfile=dist/server.cjs",
+    "dev:frontend": "vite --config frontend/vite.config.ts",
+    "build": "npm run build:frontend && npm run build:server",
+    "build:frontend": "vite build --config frontend/vite.config.ts",
+    "build:server": "esbuild backend/server.ts --bundle --platform=node --format=cjs --packages=external --sourcemap --outfile=dist/server.cjs",
     "start": "node dist/server.cjs",
     "preview": "vite preview --config frontend/vite.config.ts",
-    "clean": "rm -rf dist server.js",
+    "clean": "node -e \"const fs=require('fs'); for (const p of ['dist','server.js']) fs.rmSync(p,{recursive:true,force:true});\"",
     "lint": "tsc --noEmit"
   },
   "dependencies": {
